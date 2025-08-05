@@ -29,8 +29,8 @@ body::before {
 }
 
 #mainDiv {
-    width: 100%;
-    height: 100%
+    width: 120%;
+    height: 120%
 }
 
 #loveHeart {
@@ -154,7 +154,7 @@ body::before {
 
 #me,
 #her {
-    width: 30%;
+    width: 40%;
     height: auto;
     opacity: 0;
     display: block
@@ -221,17 +221,15 @@ body::before {
     height: auto;
     filter: invert();
     margin-left: 40%;
-    rotate: 40deg;
-    transform: scaleX(-1);
+    rotate: 215deg;
     position: relative;
-    top:-45ch;
-    right: -30ch
+    
 
 }
 
 #text1 {
     font-family: "Rubik Bubbles", system-ui;
-    font-size: 50px;
+    font-size: 60px;
     color: white;
     -webkit-text-stroke: 2px #7a5f7e;
     margin-right: auto;
@@ -240,8 +238,7 @@ body::before {
     margin-left: 50px;
     text-align:center;
     position:relative;
-    top: -16ch;
-    right: -10ch;
+    top: -100%;
 }
 
 body, html {
