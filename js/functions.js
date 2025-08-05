@@ -43,7 +43,7 @@ function getHeartPoint(angle) {
 }
 
 function startHeartAnimation() {
-	var interval = 50;
+	var interval = 35;
 	var angle = 10;
 	var heart = new Array();
 	var animationTimer = setInterval(function () {
@@ -92,26 +92,60 @@ function startHeartAnimation() {
 	};
 })(jQuery);
 
-function timeElapse(date){
-	var current = Date();
-	var seconds = (Date.parse(current) - Date.parse(date)) / 1000;
-	var days = Math.floor(seconds / (3600 * 24));
-	seconds = seconds % (3600 * 24);
-	var hours = Math.floor(seconds / 3600);
-	if (hours < 10) {
-		hours = "0" + hours;
-	}
-	seconds = seconds % 3600;
-	var minutes = Math.floor(seconds / 60);
-	if (minutes < 10) {
-		minutes = "0" + minutes;
-	}
-	seconds = seconds % 60;
-	if (seconds < 10) {
-		seconds = "0" + seconds;
-	}
-	var result = "<span class=\"digit\">" + days + "</span> days <span class=\"digit\">" + hours + "</span> hours <span class=\"digit\">" + minutes + "</span> minutes <span class=\"digit\">" + seconds + "</span> seconds"; 
-	$("#elapseClock").html(result);
+function pluralize(number, forms) {
+    // forms: [singular nominative, singular genitive, plural genitive]
+    // e.g. for days: ['день', 'дня', 'дней']
+    
+    let lastTwo = number % 100;
+    let lastDigit = number % 10;
+    
+    // Handle special cases for 11-14
+    if (lastTwo >= 11 && lastTwo <= 14) {
+        return forms[2];
+    }
+    
+    switch (lastDigit) {
+        case 1: return forms[0];
+        case 2:
+        case 3:
+        case 4: return forms[1];
+        default: return forms[2];
+    }
+}
+
+function timeElapse() {
+    // Set the target date (May 25th, 2025 at 23:13)
+    var targetDate = new Date('May 25, 2025 23:13:00').getTime();
+    var now = new Date().getTime();
+    
+    // Calculate the difference in milliseconds
+    var difference = now - targetDate;
+    
+    // If target date is in future
+    if (difference < 0) {
+        $("#elapseClock").html("До 25 мая 2025 года еще не наступило!");
+        return;
+    }
+    
+    // Calculate time components
+    var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+    
+    // Get properly declined forms
+    var daysForm = pluralize(days, ['день', 'дня', 'дней']);
+    var hoursForm = pluralize(hours, ['час', 'часа', 'часов']);
+    var minutesForm = pluralize(minutes, ['минуту', 'минуты', 'минут']);
+    var secondsForm = pluralize(seconds, ['секунду', 'секунды', 'секунд']);
+    
+    // Build result string
+    var result = "<span class=\"digit\">" + days + "</span> " + daysForm + " " +
+                 "<span class=\"digit\">" + hours + "</span> " + hoursForm + " " +
+                 "<span class=\"digit\">" + minutes + "</span> " + minutesForm + " " +
+                 "<span class=\"digit\">" + seconds + "</span> " + secondsForm;
+    
+    $("#elapseClock").html(result);
 }
 
 function showMessages() {
